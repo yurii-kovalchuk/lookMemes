@@ -5,7 +5,10 @@ import { createEdgeRouter } from "next-connect";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const router = createEdgeRouter<NextRequest, { params?: unknown }>();
+const router = createEdgeRouter<
+  NextRequest,
+  { params?: void | Response | Promise<void | Response> }
+>();
 
 router.get((req) => {
   const { searchParams } = new URL(req.url);
@@ -36,10 +39,16 @@ router.post(async (req) => {
   return res;
 });
 
-export async function GET(request: NextRequest, ctx: { params?: unknown }) {
+export async function GET(
+  request: NextRequest,
+  ctx: { params?: void | Response | Promise<void | Response> }
+) {
   return router.run(request, ctx);
 }
 
-export async function POST(request: NextRequest, ctx: { params?: unknown }) {
+export async function POST(
+  request: NextRequest,
+  ctx: { params?: void | Response | Promise<void | Response> }
+) {
   return router.run(request, ctx);
 }
