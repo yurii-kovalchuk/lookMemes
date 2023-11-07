@@ -3,6 +3,8 @@ import { getCategories } from "@/services/fetchCategories";
 import type { Category } from "@/utils/common";
 import React from "react";
 import useSWR from "swr";
+import CategoryItem from "../CategoryItem/CategoryItem";
+import "./CategoriesList";
 
 const CategoriesList = () => {
   const { data: categories, isLoading } = useSWR("categories", getCategories);
@@ -11,7 +13,7 @@ const CategoriesList = () => {
   ) : (
     <ul>
       {categories.map((c: Category) => (
-        <li key={c.id}>{c.name}</li>
+        <CategoryItem key={c.id} info={c} />
       ))}
     </ul>
   );
