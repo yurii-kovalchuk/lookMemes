@@ -10,9 +10,19 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: "Satoshi", sans-serif;
+  color: #fff;
+  background: #1e1e27;
 }
 
 a {
+  display: block;
   color: inherit;
   text-decoration: none;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
