@@ -4,14 +4,16 @@ import { useFormik } from "formik";
 import { LuSearch } from "react-icons/lu";
 
 import "./SearchBar.css";
+import { getCategoriesBySearch } from "@/services/fetchCategories";
 
 const SearchBar = () => {
   const formik = useFormik({
     initialValues: {
       search: "",
     },
-    onSubmit: ({ search }, { resetForm }) => {
-      console.log(search);
+    onSubmit: async ({ search }, { resetForm }) => {
+      const categories = await getCategoriesBySearch(search);
+      console.log(categories);
       resetForm();
     },
   });
