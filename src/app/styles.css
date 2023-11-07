@@ -1,0 +1,30 @@
+.categoriesContainer {
+  max-width: 638px;
+  margin: 40px auto 0;
+}
+
+.categoriesBtn {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 12px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: linear-gradient(0deg, #884dfe 0%, #884dfe 100%),
+    linear-gradient(104deg, #a139fd 11.26%, #50bdfc 90.79%);
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.08);
+  color: #fff;
+}
+
+.categoriesBtnText {
+  display: block;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+}

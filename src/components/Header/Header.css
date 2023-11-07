@@ -3,7 +3,7 @@
   background: #1e1e27;
 }
 
-.header-container {
+.headerContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;

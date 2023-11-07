@@ -1,4 +1,4 @@
-import { getCategories, randomId, saveCategories } from "@/utils/api";
+import { getCategories, randomId, createCategories } from "@/utils/api";
 import type { Category } from "@/utils/common";
 import { validateCategory } from "@/utils/common";
 import { createEdgeRouter } from "next-connect";
@@ -32,7 +32,7 @@ router.post(async (req) => {
   validateCategory(newCategory);
   categories.push(newCategory);
   const res = NextResponse.json(newCategory);
-  saveCategories(res, categories);
+  createCategories(res, categories);
   return res;
 });
 

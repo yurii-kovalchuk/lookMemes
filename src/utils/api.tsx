@@ -22,7 +22,7 @@ export const getCategories = (req: NextRequest): Category[] => {
   return JSON.parse(cookie.value);
 };
 
-export const saveCategories = (res: NextResponse, categories: Category[]) => {
+export const createCategories = (res: NextResponse, categories: Category[]) => {
   res.cookies.set(COOKIE_NAME, JSON.stringify(categories));
   return res;
 };

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import useSWR from "swr";
 import { useFormik } from "formik";
 import { LuSearch } from "react-icons/lu";
 
@@ -7,13 +8,15 @@ import "./SearchBar.css";
 import { getCategoriesBySearch } from "@/services/fetchCategories";
 
 const SearchBar = () => {
+  const { mutate } = useSWR("categories");
   const formik = useFormik({
     initialValues: {
       search: "",
     },
     onSubmit: async ({ search }, { resetForm }) => {
-      const categories = await getCategoriesBySearch(search);
-      console.log(categories);
+      const filteredCategories = await getCategoriesBySearch(search);
+      mutate(filteredCategories);
+
       resetForm();
     },
   });
