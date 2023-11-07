@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/assets/Logo.svg";
-
+import SearchBar from "@/components/SearchBar/SearchBar";
 import "./Header.css";
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
             <span className="logoText">Memes</span>
           </Link>
 
-          <div>search</div>
+          <SearchBar />
         </div>
       </div>
     </header>
