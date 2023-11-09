@@ -1,5 +1,5 @@
-import { FaPlus } from "react-icons/fa6";
 import CategoriesList from "@/components/CategoriesList/CategoriesList";
+import CategoriesForm from "@/components/CategoriesForm/CategoriesForm";
 import "./styles.css";
 
 export default async function Home() {
@@ -7,10 +7,7 @@ export default async function Home() {
     <main>
       <div className="container">
         <div className="categoriesContainer">
-          <button className="categoriesBtn">
-            <FaPlus size={14} />
-            <span className="categoriesBtnText">Create a Category</span>
-          </button>
+          <CategoriesForm />
           <CategoriesList />
         </div>
       </div>

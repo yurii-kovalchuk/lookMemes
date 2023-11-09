@@ -12,8 +12,8 @@ const CategoriesList = () => {
     <h3>Loading... </h3>
   ) : (
     <ul>
-      {categories.map((c: Category) => (
-        <CategoryItem key={c.id} info={c} />
+      {categories.map((category: Category) => (
+        <CategoryItem key={category.id} info={category} />
       ))}
     </ul>
   );
