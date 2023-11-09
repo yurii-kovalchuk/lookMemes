@@ -7,7 +7,9 @@ import { NextResponse } from "next/server";
 
 const router = createEdgeRouter<
   NextRequest,
-  { params?: void | Response | Promise<void | Response> }
+  {
+    params: Record<string, string>;
+  }
 >();
 
 router.get((req) => {
@@ -41,14 +43,14 @@ router.post(async (req) => {
 
 export async function GET(
   request: NextRequest,
-  ctx: { params?: void | Response | Promise<void | Response> }
+  ctx: { params: Record<string, string> }
 ) {
   return router.run(request, ctx);
 }
 
 export async function POST(
   request: NextRequest,
-  ctx: { params?: void | Response | Promise<void | Response> }
+  ctx: { params: Record<string, string> }
 ) {
   return router.run(request, ctx);
 }
