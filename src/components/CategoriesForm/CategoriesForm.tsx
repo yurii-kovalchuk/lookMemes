@@ -1,17 +1,13 @@
 "use client";
 import React from "react";
-import {
-  Formik,
-  Field,
-  Form,
-  ErrorMessage,
-  FieldArray,
-  FieldProps,
-} from "formik";
+import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
+import Image from "next/image";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { randomId } from "@/utils/api";
 import "./CategoryForm.css";
+import ToggleOn from "@/assets/toggleOn.svg";
+import ToggleOff from "@/assets/toggleOff.svg";
 
 type FormValue = {
   id: string;
@@ -38,7 +34,7 @@ function validateName(value: string) {
 }
 
 const AddingForm = () => {
-  const initialValues: { categories: FormValue[] | [] } = { categories: [] };
+  const initialValues: MyFormValues = { categories: [] };
   return (
     <Formik
       initialValues={initialValues}
@@ -69,49 +65,34 @@ const AddingForm = () => {
                           name={`categories.${idx}.name`}
                           placeholder="Enter Category Name"
                           type="text"
-                          className="inputItem"
+                          className={`inputItem ${
+                            category.isActive ? `inputActive` : ``
+                          }`}
                           validate={validateName}
                         />
                         <ErrorMessage
                           name={`categories.${idx}.name`}
                           component="div"
                         />
-                        {/* <label htmlFor={`categories.${idx}.isActive`}>
-                          qweqwe
-                          <Field
-                            type="checkbox"
-                            name={`categories.${idx}.isActive`}
-                          >
-                            {({ field }: FieldProps) => {
-                              console.log(field.value);
-                              return (
-                                <Field
-                                  type="checkbox"
-                                  name={`categories.${idx}.isActive`}
-                                />
-                              );
-                            }}
-                          </Field>
-                        </label> */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            values.categories[idx].isActive =
-                              !values.categories[idx].isActive;
-                          }}
-                        >
-                          {values.categories[idx].isActive
-                            ? "active"
-                            : "disabled"}
-                        </button>
+                        <div className="inputInteractive">
+                          <label className="InputToggle">
+                            {category.isActive ? (
+                              <Image src={ToggleOn} alt="toggle on" />
+                            ) : (
+                              <Image src={ToggleOff} alt="toggle off" />
+                            )}
 
-                        <button
-                          type="button"
-                          onClick={() => remove(idx)}
-                          className="deleteBtn"
-                        >
-                          <MdDelete size={16} />
-                        </button>
+                            <Field
+                              type="checkbox"
+                              name={`categories.${idx}.isActive`}
+                              className="visually-hidden"
+                            />
+                          </label>
+
+                          <button type="button" onClick={() => remove(idx)}>
+                            <MdDelete size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
