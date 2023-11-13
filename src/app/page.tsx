@@ -1,14 +1,21 @@
-import CategoriesList from "@/components/CategoriesList/CategoriesList";
+"use client";
+import React from "react";
+import useSWR from "swr";
+import { getCategories } from "@/services/fetchCategories";
 import CategoriesForm from "@/components/CategoriesForm/CategoriesForm";
 import "./styles.css";
 
-export default async function Home() {
+export default function Home() {
+  const { data: categories, isLoading } = useSWR("categories", getCategories);
   return (
     <main>
       <div className="container">
         <div className="categoriesContainer">
-          <CategoriesForm />
-          <CategoriesList />
+          {isLoading ? (
+            <h3>Loading... </h3>
+          ) : (
+            <CategoriesForm initialCategories={categories} />
+          )}
         </div>
       </div>
     </main>

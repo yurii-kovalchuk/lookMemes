@@ -5,13 +5,13 @@ import Image from "next/image";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { randomId } from "@/utils/api";
-import "./CategoryForm.css";
 import ToggleOn from "@/assets/toggleOn.svg";
 import ToggleOff from "@/assets/toggleOff.svg";
 import type { Category } from "@/app/api/types/common";
+import "./CategoryForm.css";
 
-type MyFormValues = {
-  categories: Category[];
+type FormProps = {
+  initialCategories: Category[];
 };
 
 const newCategory = {
@@ -31,14 +31,12 @@ function validateName(value: string) {
   return error;
 }
 
-const AddingForm = () => {
-  const initialValues: MyFormValues = { categories: [] };
-
+const CategoriesForm = ({ initialCategories }: FormProps) => {
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ categories: initialCategories }}
       onSubmit={async (values) => {
-        console.log(values.categories.length > initialValues.categories.length);
+        console.log(values.categories.length);
       }}
     >
       {({ values }) => (
@@ -99,13 +97,12 @@ const AddingForm = () => {
               </div>
             )}
           </FieldArray>
-          {values.categories.length > initialValues.categories.length && (
-            <button type="submit">Save Changes</button>
-          )}
+
+          <button type="submit">Save Changes</button>
         </Form>
       )}
     </Formik>
   );
 };
 
-export default AddingForm;
+export default CategoriesForm;
