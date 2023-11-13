@@ -1,15 +1,12 @@
 "use client";
 import React from "react";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
-import Image from "next/image";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { randomId } from "@/utils/api";
-import ToggleOn from "@/assets/toggleOn.svg";
-import ToggleOff from "@/assets/toggleOff.svg";
 import type { Category } from "@/app/api/types/common";
-import "./CategoryForm.css";
 import Toggle from "../Toggle/Toggle";
+import "./CategoryForm.css";
 
 type FormProps = {
   initialCategories: Category[];
@@ -56,7 +53,7 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                   </span>
                 </button>
                 {values.categories.length > 0 &&
-                  values.categories.map((category, idx) => (
+                  values.categories.map(({ isActive, isDefault }, idx) => (
                     <div key={idx}>
                       <div className="inputdWrap">
                         <Field
@@ -64,7 +61,7 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                           placeholder="Enter Category Name"
                           type="text"
                           className={`inputItem ${
-                            category.isActive ? `inputActive` : ``
+                            isActive ? `inputActive` : ``
                           }`}
                           validate={validateName}
                         />
@@ -75,12 +72,14 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                         <div className="inputInteractive">
                           <Toggle
                             name={`categories.${idx}.isActive`}
-                            isChecked={category.isActive}
+                            isChecked={isActive}
                           />
 
-                          <button type="button" onClick={() => remove(idx)}>
-                            <MdDelete size={16} />
-                          </button>
+                          {!isDefault && (
+                            <button type="button" onClick={() => remove(idx)}>
+                              <MdDelete size={16} />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

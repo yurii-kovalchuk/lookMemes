@@ -1,57 +1,49 @@
-.InputToggle {
-  cursor: pointer;
-}
-
 .pill {
-  padding: 7px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 3px;
-
+  position: relative;
+  min-width: 48px;
+  height: 28px;
   cursor: pointer;
   border-radius: 99px;
   background: #3e3f49;
-  color: #9b9d9f;
 }
 
 .handle {
+  position: absolute;
+  left: calc(0% + 8px);
+  top: 0;
+  bottom: 0;
+  margin: auto;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: #9b9d9f;
+
+  transition: left 300ms, background 300ms;
 }
 
 .text {
+  position: absolute;
+  right: calc(0% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
   text-align: center;
   font-size: 11px;
   font-style: normal;
   font-weight: 700;
   line-height: 12px;
   text-transform: capitalize;
-  /* color: #9b9d9f; */
-}
-.active {
-  flex-direction: row-reverse;
-  gap: 4px;
-  color: #07d41b;
-}
-.active .handle {
-  background: #07d41b;
-}
+  color: #9b9d9f;
 
-/* .active {
-  gap: 4px;
+  transition: right 300ms, transform 300ms, color 300ms;
 }
 
 .active .handle {
+  left: calc(100% - 8px - 12px);
   background: #07d41b;
-  transform: translateX(20px);
 }
 
 .active .text {
+  right: calc(100% - 8px);
+  transform: translate(100%, -50%);
   color: #07d41b;
-  transform: translateX(-16px);
-} */
+}
