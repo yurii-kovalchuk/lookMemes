@@ -9,6 +9,7 @@ import ToggleOn from "@/assets/toggleOn.svg";
 import ToggleOff from "@/assets/toggleOff.svg";
 import type { Category } from "@/app/api/types/common";
 import "./CategoryForm.css";
+import Toggle from "../Toggle/Toggle";
 
 type FormProps = {
   initialCategories: Category[];
@@ -72,20 +73,10 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                           component="div"
                         />
                         <div className="inputInteractive">
-                          <label className="InputToggle">
-                            {category.isActive ? (
-                              <Image src={ToggleOn} alt="toggle on" />
-                            ) : (
-                              <Image src={ToggleOff} alt="toggle off" />
-                            )}
-
-                            <Field
-                              type="checkbox"
-                              name={`categories.${idx}.isActive`}
-                              className="visually-hidden"
-                              checked={category.isActive}
-                            />
-                          </label>
+                          <Toggle
+                            name={`categories.${idx}.isActive`}
+                            isChecked={category.isActive}
+                          />
 
                           <button type="button" onClick={() => remove(idx)}>
                             <MdDelete size={16} />
