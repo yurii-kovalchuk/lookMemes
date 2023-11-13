@@ -4,18 +4,21 @@ import { COOKIE_NAME } from "./common";
 
 export const randomId = () => crypto.randomUUID();
 
-const initialDefaultData = [
+const defaultCategories = [
   {
     id: randomId(),
     name: "Other",
     isActive: true,
+    hasUpdate: false,
+    isDefault: true,
   },
 ];
 
 export const getCategories = (req: NextRequest): Category[] => {
   let cookie = req.cookies.get(COOKIE_NAME);
+
   while (!cookie) {
-    req.cookies.set(COOKIE_NAME, JSON.stringify(initialDefaultData));
+    req.cookies.set(COOKIE_NAME, JSON.stringify(defaultCategories));
     cookie = req.cookies.get(COOKIE_NAME);
   }
 

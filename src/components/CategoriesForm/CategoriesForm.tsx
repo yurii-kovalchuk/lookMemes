@@ -8,25 +8,23 @@ import { randomId } from "@/utils/api";
 import "./CategoryForm.css";
 import ToggleOn from "@/assets/toggleOn.svg";
 import ToggleOff from "@/assets/toggleOff.svg";
-
-type FormValue = {
-  id: string;
-  name: string;
-  isActive: boolean;
-};
+import type { Category } from "@/app/api/types/common";
 
 type MyFormValues = {
-  categories: FormValue[] | [];
+  categories: Category[];
 };
 
-const emptyCategory = {
+const newCategory = {
   id: randomId(),
   name: "",
+  order: 0,
   isActive: false,
+  hasUpdate: true,
+  isDefault: false,
 };
 
 function validateName(value: string) {
-  let error;
+  let error = "";
   if (value?.length < 1) {
     error = "Name required";
   }
@@ -35,11 +33,12 @@ function validateName(value: string) {
 
 const AddingForm = () => {
   const initialValues: MyFormValues = { categories: [] };
+
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={async (values) => {
-        console.log(values);
+        console.log(values.categories.length > initialValues.categories.length);
       }}
     >
       {({ values }) => (
@@ -50,7 +49,7 @@ const AddingForm = () => {
                 <button
                   type="button"
                   className="categoriesAddBtn"
-                  onClick={() => insert(0, emptyCategory)}
+                  onClick={() => insert(0, newCategory)}
                 >
                   <FaPlus size={14} />
                   <span className="categoriesAddBtnText">
@@ -86,6 +85,7 @@ const AddingForm = () => {
                               type="checkbox"
                               name={`categories.${idx}.isActive`}
                               className="visually-hidden"
+                              checked={category.isActive}
                             />
                           </label>
 
@@ -99,7 +99,9 @@ const AddingForm = () => {
               </div>
             )}
           </FieldArray>
-          <button type="submit">Save Changes</button>
+          {values.categories.length > initialValues.categories.length && (
+            <button type="submit">Save Changes</button>
+          )}
         </Form>
       )}
     </Formik>
