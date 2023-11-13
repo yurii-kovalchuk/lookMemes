@@ -38,3 +38,9 @@
   align-items: center;
   gap: 20px;
 }
+
+.errorMessage {
+  color: tomato;
+  margin-top: -12px;
+  margin-bottom: 10px;
+}

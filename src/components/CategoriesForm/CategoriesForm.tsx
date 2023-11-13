@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
+import { object, array, string } from "yup";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { randomId } from "@/utils/api";
@@ -21,18 +22,19 @@ const newCategory = {
   isDefault: false,
 };
 
-function validateName(value: string) {
-  let error = "";
-  if (value?.length < 1) {
-    error = "Name required";
-  }
-  return error;
-}
+const CategoriesSchema = object({
+  categories: array(
+    object({
+      name: string().required("Name qweqwe required"),
+    })
+  ),
+});
 
 const CategoriesForm = ({ initialCategories }: FormProps) => {
   return (
     <Formik
       initialValues={{ categories: initialCategories }}
+      validationSchema={CategoriesSchema}
       onSubmit={async (values) => {
         console.log(values.categories.length);
       }}
@@ -63,11 +65,11 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                           className={`inputItem ${
                             isActive ? `inputActive` : ``
                           }`}
-                          validate={validateName}
                         />
                         <ErrorMessage
                           name={`categories.${idx}.name`}
                           component="div"
+                          className="errorMessage"
                         />
                         <div className="inputInteractive">
                           <Toggle
