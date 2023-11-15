@@ -1,10 +1,8 @@
-export type QueryParams = Record<string, string>;
+import type { QueryParams } from "@/app/api/types/common";
 
 const URL = "/api/categories";
 
-export const getCategories = async (
-  params: QueryParams = { search: "search" }
-) => {
+export const getCategories = async (params: QueryParams = {}) => {
   const queryString = new URLSearchParams(params).toString();
   const fullUrl = `${URL}?${queryString}`;
 

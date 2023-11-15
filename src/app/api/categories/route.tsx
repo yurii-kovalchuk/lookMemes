@@ -3,10 +3,11 @@ import {
   randomId,
   createCategories,
 } from "@/utils/dbApi";
-import type { Category } from "../types/common";
 import { createEdgeRouter } from "next-connect";
-import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import type { Category } from "../types/common";
+import type { QueryParams } from "../types/common";
 
 const router = createEdgeRouter<
   NextRequest,
@@ -45,14 +46,14 @@ router.post(async (req) => {
 
 export async function GET(
   request: NextRequest,
-  ctx: { params?: Record<string, string> }
+  ctx: { params?: QueryParams }
 ): Promise<void | Response> {
   return router.run(request, ctx) as Promise<void | Response>;
 }
 
 export async function POST(
   request: NextRequest,
-  ctx: { params?: Record<string, string> }
+  ctx: { params?: QueryParams }
 ): Promise<void | Response> {
   return router.run(request, ctx) as Promise<void | Response>;
 }

@@ -6,3 +6,5 @@ export type Category = {
   hasUpdate: boolean;
   isDefault: boolean;
 };
+
+export type QueryParams = Record<string, string>;
