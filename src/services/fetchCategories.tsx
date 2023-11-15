@@ -1,12 +1,14 @@
-export const getCategories = async () => {
-  const res = await fetch("/api/categories");
+export type QueryParams = Record<string, string>;
 
-  if (!res.ok) throw new Error("Unable to fetch");
-  return res.json();
-};
+const URL = "/api/categories";
 
-export const getCategoriesBySearch = async (search: string) => {
-  const res = await fetch(`/api/categories?search=${search}`);
+export const getCategories = async (
+  params: QueryParams = { search: "search" }
+) => {
+  const queryString = new URLSearchParams(params).toString();
+  const fullUrl = `${URL}?${queryString}`;
+
+  const res = await fetch(fullUrl);
 
   if (!res.ok) throw new Error("Unable to fetch");
   return res.json();

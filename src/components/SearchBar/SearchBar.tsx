@@ -3,9 +3,8 @@ import React from "react";
 import useSWR from "swr";
 import { useFormik } from "formik";
 import { LuSearch } from "react-icons/lu";
-
+import { getCategories } from "@/services/fetchCategories";
 import "./SearchBar.css";
-import { getCategoriesBySearch } from "@/services/fetchCategories";
 
 const SearchBar = () => {
   const { mutate } = useSWR("categories");
@@ -14,7 +13,7 @@ const SearchBar = () => {
       search: "",
     },
     onSubmit: async ({ search }, { resetForm }) => {
-      const filteredCategories = await getCategoriesBySearch(search);
+      const filteredCategories = await getCategories({ search });
       mutate(filteredCategories);
 
       resetForm();

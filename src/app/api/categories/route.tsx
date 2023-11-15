@@ -1,6 +1,9 @@
-import { getCategories, randomId, createCategories } from "@/utils/api";
-import type { Category } from "@/utils/common";
-import { validateCategory } from "@/utils/common";
+import {
+  getCategoriesFromCookie,
+  randomId,
+  createCategories,
+} from "@/utils/dbApi";
+import type { Category } from "../types/common";
 import { createEdgeRouter } from "next-connect";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -15,26 +18,25 @@ const router = createEdgeRouter<
 router.get((req) => {
   const { searchParams } = new URL(req.url);
   const search = searchParams.get("search");
-  const categories = getCategories(req);
+  let categories = getCategoriesFromCookie(req);
 
-  let filteredCategories = categories;
   if (search) {
-    filteredCategories = categories.filter((c) =>
+    categories = categories.filter((c) =>
       c.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
     );
   }
-  return NextResponse.json(filteredCategories);
+  return NextResponse.json(categories);
 });
 
 router.post(async (req) => {
   const body = await req.json();
-  const categories = getCategories(req);
+  const categories = getCategoriesFromCookie(req);
   const newCategory = {
     id: randomId(),
     isActive: false,
     ...body,
   } as Category;
-  validateCategory(newCategory);
+
   categories.push(newCategory);
   const res = NextResponse.json(newCategory);
   createCategories(res, categories);

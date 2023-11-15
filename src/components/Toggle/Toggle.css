@@ -18,7 +18,7 @@
   border-radius: 50%;
   background: #9b9d9f;
 
-  transition: left 300ms, background 300ms;
+  /* transition: left 300ms, background 300ms; */
 }
 
 .text {
@@ -34,7 +34,7 @@
   text-transform: capitalize;
   color: #9b9d9f;
 
-  transition: right 300ms, transform 300ms, color 300ms;
+  /* transition: right 300ms, transform 300ms, color 300ms; */
 }
 
 .active .handle {

@@ -4,7 +4,7 @@ import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
 import { object, array, string } from "yup";
 import { FaPlus } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
-import { randomId } from "@/utils/api";
+import { randomId } from "@/utils/dbApi";
 import type { Category } from "@/app/api/types/common";
 import Toggle from "../Toggle/Toggle";
 import "./CategoryForm.css";
@@ -25,7 +25,7 @@ const newCategory = {
 const CategoriesSchema = object({
   categories: array(
     object({
-      name: string().required("Name qweqwe required"),
+      name: string().required("Name is required"),
     })
   ),
 });
@@ -36,8 +36,9 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
       initialValues={{ categories: initialCategories }}
       validationSchema={CategoriesSchema}
       onSubmit={async (values) => {
-        console.log(values.categories.length);
+        console.log("values", values);
       }}
+      enableReinitialize
     >
       {({ values }) => (
         <Form>
@@ -54,7 +55,8 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                     Create a Category
                   </span>
                 </button>
-                {values.categories.length > 0 &&
+                {values.categories &&
+                  values.categories.length > 0 &&
                   values.categories.map(({ isActive, isDefault }, idx) => (
                     <div key={idx}>
                       <div className="inputdWrap">

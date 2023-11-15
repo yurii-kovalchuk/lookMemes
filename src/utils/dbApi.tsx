@@ -1,8 +1,9 @@
 import type { NextRequest, NextResponse } from "next/server";
-import type { Category } from "./common";
-import { COOKIE_NAME } from "./common";
+import type { Category } from "@/app/api/types/common";
 
 export const randomId = () => crypto.randomUUID();
+
+const COOKIE_NAME = "db_categories";
 
 const defaultCategories = [
   {
@@ -14,7 +15,7 @@ const defaultCategories = [
   },
 ];
 
-export const getCategories = (req: NextRequest): Category[] => {
+export const getCategoriesFromCookie = (req: NextRequest): Category[] => {
   let cookie = req.cookies.get(COOKIE_NAME);
 
   while (!cookie) {
