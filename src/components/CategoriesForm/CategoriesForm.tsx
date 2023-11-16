@@ -1,25 +1,21 @@
 "use client";
 import React from "react";
-import { Formik, Field, Form, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 import { object, array, string } from "yup";
 import { FaPlus } from "react-icons/fa6";
-import { MdDelete } from "react-icons/md";
 import { randomId } from "@/utils/dbApi";
 import type { Category } from "@/app/api/types/common";
-import Toggle from "../Toggle/Toggle";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import CategoriesItem from "../CategoriesItem/CategoriesItem";
 import "./CategoryForm.css";
 
 type FormProps = {
   initialCategories: Category[];
-};
-
-const newCategory = {
-  id: randomId(),
-  name: "",
-  order: 0,
-  isActive: false,
-  hasUpdate: true,
-  isDefault: false,
 };
 
 const CategoriesSchema = object({
@@ -40,61 +36,79 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
       }}
       enableReinitialize
     >
-      {({ values }) => (
-        <Form>
-          <FieldArray name="categories">
-            {({ insert, remove }) => (
-              <div>
-                <button
-                  type="button"
-                  className="categoriesAddBtn"
-                  onClick={() => insert(0, newCategory)}
-                >
-                  <FaPlus size={14} />
-                  <span className="categoriesAddBtnText">
-                    Create a Category
-                  </span>
-                </button>
-                {values.categories &&
-                  values.categories.length > 0 &&
-                  values.categories.map(({ isActive, isDefault }, idx) => (
-                    <div key={idx}>
-                      <div className="inputdWrap">
-                        <Field
-                          name={`categories.${idx}.name`}
-                          placeholder="Enter Category Name"
-                          type="text"
-                          className={`inputItem ${
-                            isActive ? `inputActive` : ``
-                          }`}
-                        />
-                        <ErrorMessage
-                          name={`categories.${idx}.name`}
-                          component="div"
-                          className="errorMessage"
-                        />
-                        <div className="inputInteractive">
-                          <Toggle
-                            name={`categories.${idx}.isActive`}
-                            isChecked={isActive}
+      {({ values, setValues }) => {
+        const onDragEnd = (event: any) => {
+          const { active, over } = event;
+          if (active.id === over.id) {
+            return;
+          }
+          setValues((prevState) => {
+            const oldIndex = prevState.categories.findIndex(
+              (category) => category.id === active.id
+            );
+            const newIndex = prevState.categories.findIndex(
+              (category) => category.id === over.id
+            );
+            const newCategories = arrayMove(
+              prevState.categories,
+              oldIndex,
+              newIndex
+            );
+            return { ...prevState, categories: newCategories };
+          });
+        };
+        return (
+          <Form>
+            <FieldArray name="categories">
+              {({ insert, remove }) => (
+                <div>
+                  <button
+                    type="button"
+                    className="categoriesAddBtn"
+                    onClick={() =>
+                      insert(0, {
+                        id: randomId(),
+                        name: "",
+                        order: 0,
+                        isActive: false,
+                        hasUpdate: true,
+                        isDefault: false,
+                      })
+                    }
+                  >
+                    <FaPlus size={14} />
+                    <span className="categoriesAddBtnText">
+                      Create a Category
+                    </span>
+                  </button>
+                  <DndContext
+                    collisionDetection={closestCenter}
+                    onDragEnd={onDragEnd}
+                  >
+                    <SortableContext
+                      items={values.categories}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {values.categories &&
+                        values.categories.length > 0 &&
+                        values.categories.map((category, idx) => (
+                          <CategoriesItem
+                            key={category.id}
+                            category={category}
+                            idx={idx}
+                            remove={remove}
                           />
+                        ))}
+                    </SortableContext>
+                  </DndContext>
+                </div>
+              )}
+            </FieldArray>
 
-                          {!isDefault && (
-                            <button type="button" onClick={() => remove(idx)}>
-                              <MdDelete size={16} />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </FieldArray>
-
-          <button type="submit">Save Changes</button>
-        </Form>
-      )}
+            <button type="submit">Save Changes</button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

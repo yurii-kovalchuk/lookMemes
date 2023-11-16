@@ -12,7 +12,7 @@ import type { QueryParams } from "../types/common";
 const router = createEdgeRouter<
   NextRequest,
   {
-    params?: Record<string, string>;
+    params?: QueryParams;
   }
 >();
 
