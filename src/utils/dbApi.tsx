@@ -10,8 +10,8 @@ const defaultCategories = [
     id: randomId(),
     name: "Other",
     isActive: true,
-    hasUpdate: false,
     isDefault: true,
+    order: 0,
   },
 ];
 

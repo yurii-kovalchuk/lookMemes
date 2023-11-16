@@ -1,10 +1,9 @@
 export type Category = {
   id: string;
   name: string;
-  order: number;
   isActive: boolean;
-  hasUpdate: boolean;
   isDefault: boolean;
+  order: number;
 };
 
 export type QueryParams = Record<string, string>;

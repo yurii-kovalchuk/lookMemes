@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Field, ErrorMessage } from "formik";
+import { Field, ErrorMessage, FormikTouched, FormikErrors } from "formik";
 import { MdDelete } from "react-icons/md";
 import { MdDragIndicator } from "react-icons/md";
 import { useSortable } from "@dnd-kit/sortable";
@@ -9,16 +9,26 @@ import type { Category } from "@/app/api/types/common";
 import Toggle from "@/components/Toggle/Toggle";
 import "./CategoriesItem.css";
 
+type FormValues = {
+  categories: Category[];
+};
+
 type ItemProps = {
   category: Category;
   idx: number;
-  remove: (idx: number) => void;
+  remove: (id: string) => void;
+  touched: FormikTouched<FormValues>;
+  errors: FormikErrors<FormValues>;
+  isValid: boolean;
 };
 
 const CategoriesItem = ({
   category: { id, isActive, isDefault },
   idx,
   remove,
+  errors,
+  touched,
+  isValid,
 }: ItemProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -33,12 +43,15 @@ const CategoriesItem = ({
         placeholder="Enter Category Name"
         type="text"
         className={`item ${isActive ? `itemActive` : ``}`}
+        readOnly={isDefault}
       />
-      <ErrorMessage
-        name={`categories.${idx}.name`}
-        component="div"
-        className="errorMessage"
-      />
+      {!isValid && touched.categories?.[idx] && errors.categories?.[idx] && (
+        <ErrorMessage
+          name={`categories.${idx}.name`}
+          component="div"
+          className="errorMessage"
+        />
+      )}
       <div className="itemInteractive">
         <Toggle name={`categories.${idx}.isActive`} isChecked={isActive} />
 
@@ -46,7 +59,7 @@ const CategoriesItem = ({
           <button
             type="button"
             className="interactiveBtn"
-            onClick={() => remove(idx)}
+            onClick={() => remove(id)}
           >
             <MdDelete size={16} />
           </button>

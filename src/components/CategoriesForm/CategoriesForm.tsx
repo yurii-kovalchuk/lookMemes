@@ -5,7 +5,7 @@ import { object, array, string } from "yup";
 import { FaPlus } from "react-icons/fa6";
 import { randomId } from "@/utils/dbApi";
 import type { Category } from "@/app/api/types/common";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -14,7 +14,7 @@ import {
 import CategoriesItem from "../CategoriesItem/CategoriesItem";
 import "./CategoryForm.css";
 
-type FormProps = {
+export type FormProps = {
   initialCategories: Category[];
 };
 
@@ -31,15 +31,19 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
     <Formik
       initialValues={{ categories: initialCategories }}
       validationSchema={CategoriesSchema}
+      validateOnChange={false}
+      // validateOnBlur={false}
       onSubmit={async (values) => {
         console.log("values", values);
       }}
       enableReinitialize
     >
-      {({ values, setValues }) => {
-        const onDragEnd = (event: any) => {
+      {(props) => {
+        const { values, setValues, dirty, touched, isValid, errors } = props;
+
+        const onDragEnd = (event: DragEndEvent) => {
           const { active, over } = event;
-          if (active.id === over.id) {
+          if (over === null) {
             return;
           }
           setValues((prevState) => {
@@ -49,63 +53,133 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
             const newIndex = prevState.categories.findIndex(
               (category) => category.id === over.id
             );
+
+            const initialOrder = prevState.categories.find(
+              (category) => category.id === active.id
+            )?.order;
+
+            const currentOrder = prevState.categories.find(
+              (category) => category.id === over.id
+            )?.order;
+
             const newCategories = arrayMove(
               prevState.categories,
               oldIndex,
               newIndex
             );
+
+            if (currentOrder !== undefined && initialOrder !== undefined) {
+              if (initialOrder > currentOrder) {
+                newCategories.forEach((category) => {
+                  if (category.order === initialOrder) {
+                    category.order = currentOrder;
+                  } else if (
+                    category.order >= currentOrder &&
+                    category.order < initialOrder
+                  ) {
+                    category.order += 1;
+                  }
+                });
+              } else if (initialOrder < currentOrder) {
+                newCategories.forEach((category) => {
+                  if (category.order === initialOrder) {
+                    category.order = currentOrder;
+                  } else if (
+                    category.order <= currentOrder &&
+                    category.order > initialOrder
+                  ) {
+                    category.order -= 1;
+                  }
+                });
+              }
+            }
+
             return { ...prevState, categories: newCategories };
           });
         };
         return (
           <Form>
             <FieldArray name="categories">
-              {({ insert, remove }) => (
-                <div>
-                  <button
-                    type="button"
-                    className="categoriesAddBtn"
-                    onClick={() =>
-                      insert(0, {
-                        id: randomId(),
-                        name: "",
-                        order: 0,
-                        isActive: false,
-                        hasUpdate: true,
-                        isDefault: false,
-                      })
+              {() => {
+                const onDelete = (id: string) => {
+                  setValues((prevState) => {
+                    const newCategories = prevState.categories.filter(
+                      (category) => category.id !== id
+                    );
+
+                    const orderDeleted = prevState.categories.find(
+                      (category) => category.id === id
+                    )?.order;
+
+                    if (orderDeleted !== undefined) {
+                      newCategories.forEach((category) => {
+                        if (category.order > orderDeleted) {
+                          category.order -= 1;
+                        }
+                      });
                     }
-                  >
-                    <FaPlus size={14} />
-                    <span className="categoriesAddBtnText">
-                      Create a Category
-                    </span>
-                  </button>
-                  <DndContext
-                    collisionDetection={closestCenter}
-                    onDragEnd={onDragEnd}
-                  >
-                    <SortableContext
-                      items={values.categories}
-                      strategy={verticalListSortingStrategy}
+
+                    return { ...prevState, categories: newCategories };
+                  });
+                };
+                return (
+                  <div>
+                    <button
+                      type="button"
+                      className="categoriesAddBtn"
+                      onClick={() => {
+                        setValues((prevState) => {
+                          const newCategories = prevState.categories.map(
+                            (category) => ({
+                              ...category,
+                              order: category.order + 1,
+                            })
+                          );
+                          newCategories.unshift({
+                            id: randomId(),
+                            name: "",
+                            isActive: false,
+                            isDefault: false,
+                            order: 0,
+                          });
+                          return { ...prevState, categories: newCategories };
+                        });
+                      }}
                     >
-                      {values.categories &&
-                        values.categories.length > 0 &&
-                        values.categories.map((category, idx) => (
-                          <CategoriesItem
-                            key={category.id}
-                            category={category}
-                            idx={idx}
-                            remove={remove}
-                          />
-                        ))}
-                    </SortableContext>
-                  </DndContext>
-                </div>
-              )}
+                      <FaPlus size={14} />
+                      <span className="categoriesAddBtnText">
+                        Create a Category
+                      </span>
+                    </button>
+                    <DndContext
+                      collisionDetection={closestCenter}
+                      onDragEnd={onDragEnd}
+                    >
+                      <SortableContext
+                        items={values.categories}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        {values.categories &&
+                          values.categories.length > 0 &&
+                          values.categories.map((category, idx) => (
+                            <CategoriesItem
+                              key={category.id}
+                              category={category}
+                              idx={idx}
+                              remove={onDelete}
+                              touched={touched}
+                              errors={errors}
+                              isValid={isValid}
+                            />
+                          ))}
+                      </SortableContext>
+                    </DndContext>
+                  </div>
+                );
+              }}
             </FieldArray>
 
-            <button type="submit">Save Changes</button>
+            {dirty && <button type="submit">Save Changes</button>}
           </Form>
         );
       }}
