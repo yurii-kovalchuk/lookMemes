@@ -15,10 +15,11 @@ This project is a comprehensive web application developed using Next.js, designe
 
 ## Usage
 
-Adding a Category: Click on the 'Create a Category' button and fill in the name.
-Deleting a Category: Click the delete icon next to a category and confirm in the modal window.
-Searching: Use the search bar to quickly locate categories.
-Sorting: Click and drag the drag icon to reorder them.
+- Adding a Category: Click on the 'Create a Category' button and fill in the name.
+- Editing a Category: Select a category and modify the necessary fields. Remember to save changes.
+- Deleting a Category: Click the delete icon next to a category and confirm in the modal window.
+- Searching: Use the search bar to quickly locate categories.
+- Sorting: Click and drag the drag icon to reorder them.
 
 ## API Documentation
 
