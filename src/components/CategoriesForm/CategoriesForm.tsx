@@ -58,6 +58,15 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
           if (over === null) {
             return;
           }
+
+          const currentItemIsDefault = values.categories.find(
+            (category) => category.id === over.id
+          )?.isDefault;
+
+          if (currentItemIsDefault) {
+            return;
+          }
+
           setValues((prevState) => {
             const oldIndex = prevState.categories.findIndex(
               (category) => category.id === active.id
