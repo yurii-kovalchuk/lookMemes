@@ -12,9 +12,15 @@ export const getCategories = async (params: QueryParams = {}) => {
   return res.json();
 };
 
-// export const getCategories = async (body: Category[]) => {
-//   const res = await fetch(fullUrl);
+export const postCategories = async (categories: Category[]) => {
+  const res = await fetch("/api/categories", {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(categories),
+  });
 
-//   if (!res.ok) throw new Error("Unable to fetch");
-//   return res.json();
-// };
+  if (!res.ok) throw new Error("Unable to fetch");
+  return res.json();
+};

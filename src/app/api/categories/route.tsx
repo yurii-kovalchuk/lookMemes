@@ -31,18 +31,9 @@ router.get((req) => {
 
 router.post(async (req) => {
   const body = await req.json();
-  const categories = getCategoriesFromCookie(req);
 
-  console.log(body);
-  // const newCategory = {
-  //   id: randomId(),
-  //   isActive: false,
-  //   ...body,
-  // } as Category;
-
-  // categories.push(newCategory);
   const res = NextResponse.json("success");
-  createCategories(res, categories);
+  createCategories(res, body);
   return res;
 });
 

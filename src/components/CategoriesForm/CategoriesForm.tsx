@@ -12,9 +12,10 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable";
 import CategoriesItem from "../CategoriesItem/CategoriesItem";
-import "./CategoryForm.css";
+import { postCategories } from "@/services/fetchCategories";
+import SubmittingBar from "../SubmittingBar/SubmittingBar";
 
-export type FormProps = {
+type FormProps = {
   initialCategories: Category[];
 };
 
@@ -32,14 +33,25 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
       initialValues={{ categories: initialCategories }}
       validationSchema={CategoriesSchema}
       validateOnChange={false}
-      // validateOnBlur={false}
-      onSubmit={async (values) => {
-        console.log("values", values);
+      onSubmit={async (values, { resetForm }) => {
+        const payload = values.categories;
+        const res = await postCategories(payload);
+        console.log(res);
+        resetForm({ values: { categories: payload } });
       }}
       enableReinitialize
     >
       {(props) => {
-        const { values, setValues, dirty, touched, isValid, errors } = props;
+        const {
+          values,
+          setValues,
+          dirty,
+          touched,
+          isValid,
+          errors,
+          handleSubmit,
+          resetForm,
+        } = props;
 
         const onDragEnd = (event: DragEndEvent) => {
           const { active, over } = event;
@@ -97,54 +109,56 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
             return { ...prevState, categories: newCategories };
           });
         };
+
+        const onDelete = (id: string) => {
+          setValues((prevState) => {
+            const newCategories = prevState.categories.filter(
+              (category) => category.id !== id
+            );
+
+            const orderDeleted = prevState.categories.find(
+              (category) => category.id === id
+            )?.order;
+
+            if (orderDeleted !== undefined) {
+              newCategories.forEach((category) => {
+                if (category.order > orderDeleted) {
+                  category.order -= 1;
+                }
+              });
+            }
+
+            return { ...prevState, categories: newCategories };
+          });
+        };
+
+        const onCreate = () => {
+          setValues((prevState) => {
+            const newCategories = prevState.categories.map((category) => ({
+              ...category,
+              order: category.order + 1,
+            }));
+            newCategories.unshift({
+              id: randomId(),
+              name: "",
+              isActive: false,
+              isDefault: false,
+              order: 0,
+            });
+            return { ...prevState, categories: newCategories };
+          });
+        };
+
         return (
           <Form>
             <FieldArray name="categories">
               {() => {
-                const onDelete = (id: string) => {
-                  setValues((prevState) => {
-                    const newCategories = prevState.categories.filter(
-                      (category) => category.id !== id
-                    );
-
-                    const orderDeleted = prevState.categories.find(
-                      (category) => category.id === id
-                    )?.order;
-
-                    if (orderDeleted !== undefined) {
-                      newCategories.forEach((category) => {
-                        if (category.order > orderDeleted) {
-                          category.order -= 1;
-                        }
-                      });
-                    }
-
-                    return { ...prevState, categories: newCategories };
-                  });
-                };
                 return (
                   <div>
                     <button
                       type="button"
                       className="categoriesAddBtn"
-                      onClick={() => {
-                        setValues((prevState) => {
-                          const newCategories = prevState.categories.map(
-                            (category) => ({
-                              ...category,
-                              order: category.order + 1,
-                            })
-                          );
-                          newCategories.unshift({
-                            id: randomId(),
-                            name: "",
-                            isActive: false,
-                            isDefault: false,
-                            order: 0,
-                          });
-                          return { ...prevState, categories: newCategories };
-                        });
-                      }}
+                      onClick={onCreate}
                     >
                       <FaPlus size={14} />
                       <span className="categoriesAddBtnText">
@@ -179,7 +193,12 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
               }}
             </FieldArray>
 
-            {dirty && <button type="submit">Save Changes</button>}
+            {dirty && (
+              <SubmittingBar
+                handleSubmit={handleSubmit}
+                resetForm={resetForm}
+              />
+            )}
           </Form>
         );
       }}

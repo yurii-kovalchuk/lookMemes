@@ -1,0 +1,69 @@
+.submittingBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 20px;
+
+  background: #2e2f3c;
+}
+
+.wrapBtns {
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+  align-items: center;
+}
+
+.submitBtn {
+  display: flex;
+  flex: 1;
+  height: 64px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: #45cb54;
+
+  /* Button Shadow */
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.08);
+
+  color: #fff;
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 112.5% */
+  text-transform: capitalize;
+}
+
+.cancelBtn {
+  display: flex;
+  flex: 1;
+  height: 64px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 3px solid #424454;
+
+  /* Button Shadow */
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.08);
+
+  color: #fff;
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 112.5% */
+  text-transform: capitalize;
+}
