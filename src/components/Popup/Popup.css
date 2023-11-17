@@ -1,0 +1,82 @@
+.popup {
+  width: 400px;
+  height: 286px;
+  padding: 32px 24px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  background: var(--bg-cards-bg-card-1, #272934);
+
+  /* Card Shadow */
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  margin-bottom: 24px;
+  color: var(--White, #fff);
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 24px */
+}
+
+.message {
+  margin-bottom: 24px;
+  color: var(--Text-Second, #9b9d9f);
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 24px */
+}
+
+.delSubmit {
+  display: flex;
+  width: 352px;
+  height: 58px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 4px;
+  background: var(
+    --gradients-gradient-1,
+    linear-gradient(104deg, #a139fd 11.26%, #50bdfc 90.79%)
+  );
+
+  /* Button Shadow */
+  box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.08);
+
+  color: #fff;
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px; /* 112.5% */
+  text-transform: capitalize;
+}
+
+.delCancel {
+  display: flex;
+  width: 352px;
+  height: 58px;
+  padding: 14px 0px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #ff5b5b;
+  text-align: center;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Satoshi;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%; /* 16px */
+}

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Field, ErrorMessage, FormikTouched, FormikErrors } from "formik";
 import { MdDelete } from "react-icons/md";
 import { MdDragIndicator } from "react-icons/md";
@@ -8,6 +8,7 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Category } from "@/app/api/types/common";
 import Toggle from "@/components/Toggle/Toggle";
 import "./CategoriesItem.css";
+import { Modal } from "../Modal/Modal";
 
 type FormValues = {
   categories: Category[];
@@ -30,6 +31,7 @@ const CategoriesItem = ({
   touched,
   isValid,
 }: ItemProps) => {
+  const [isModal, setIsModal] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
   const style = {
@@ -59,7 +61,7 @@ const CategoriesItem = ({
           <button
             type="button"
             className="interactiveBtn"
-            onClick={() => remove(id)}
+            onClick={() => setIsModal(true)}
           >
             <MdDelete size={16} />
           </button>
@@ -70,6 +72,9 @@ const CategoriesItem = ({
           </button>
         )}
       </div>
+      {isModal && (
+        <Modal onDelete={() => remove(id)} close={() => setIsModal(false)} />
+      )}
     </div>
   );
 };
