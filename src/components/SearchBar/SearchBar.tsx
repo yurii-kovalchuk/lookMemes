@@ -1,37 +1,28 @@
 "use client";
-import React from "react";
-import useSWR from "swr";
-import { useFormik } from "formik";
+import React, { useState } from "react";
 import { LuSearch } from "react-icons/lu";
-import { getCategories } from "@/services/fetchCategories";
+import { useRouter } from "next/navigation";
 import "./SearchBar.css";
 
 const SearchBar = () => {
-  const { mutate } = useSWR("categories");
-  const formik = useFormik({
-    initialValues: {
-      search: "",
-    },
-    onSubmit: async ({ search }, { resetForm }) => {
-      const filteredCategories = await getCategories({ search });
-      mutate(filteredCategories);
+  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    router.push(`?search=${e.target.value}`);
+  };
 
-      resetForm();
-    },
-  });
   return (
-    <form onSubmit={formik.handleSubmit} className="searchForm">
+    <form className="searchForm">
       <input
-        id="search"
         name="search"
         type="search"
         placeholder="Search"
         className="searchInput"
-        onChange={formik.handleChange}
-        value={formik.values.search}
+        value={search}
+        onChange={handleChange}
       />
-
-      <button type="submit" className="searchBtn">
+      <button type="button" className="searchBtn">
         <LuSearch size={20} />
       </button>
     </form>

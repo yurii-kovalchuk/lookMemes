@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useSearchParams } from "next/navigation";
 import { Formik, Form, FieldArray } from "formik";
 import { object, array, string } from "yup";
 import { FaPlus } from "react-icons/fa6";
@@ -28,6 +29,9 @@ const CategoriesSchema = object({
 });
 
 const CategoriesForm = ({ initialCategories }: FormProps) => {
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("search") || "";
   return (
     <Formik
       initialValues={{ categories: initialCategories }}
@@ -184,17 +188,23 @@ const CategoriesForm = ({ initialCategories }: FormProps) => {
                       >
                         {values.categories &&
                           values.categories.length > 0 &&
-                          values.categories.map((category, idx) => (
-                            <CategoriesItem
-                              key={category.id}
-                              category={category}
-                              idx={idx}
-                              remove={onDelete}
-                              touched={touched}
-                              errors={errors}
-                              isValid={isValid}
-                            />
-                          ))}
+                          values.categories
+                            .filter((category) =>
+                              category.name
+                                .toLocaleLowerCase()
+                                .includes(search.toLocaleLowerCase())
+                            )
+                            .map((category, idx) => (
+                              <CategoriesItem
+                                key={category.id}
+                                category={category}
+                                idx={idx}
+                                remove={onDelete}
+                                touched={touched}
+                                errors={errors}
+                                isValid={isValid}
+                              />
+                            ))}
                       </SortableContext>
                     </DndContext>
                   </div>
