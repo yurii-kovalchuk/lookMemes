@@ -25,7 +25,7 @@ This project is a comprehensive web application developed using Next.js, designe
 
 The following endpoints are available for CRUD operations:
 
-Create: POST /api/categories
-Read: GET /api/categories
-Update: PUT /api/categories/{id}
-Delete: DELETE /api/categories/{id}
+- Create: POST /api/categories
+- Read: GET /api/categories
+- Update: PUT /api/categories/{id}
+- Delete: DELETE /api/categories/{id}
