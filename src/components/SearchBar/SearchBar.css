@@ -1,11 +1,16 @@
 .searchForm {
   position: relative;
+  width: 380px;
+  @media screen and (max-width: 767px) {
+    margin-top: 10px;
+    width: 100%;
+  }
 }
 .searchInput {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 380px;
+  width: 100%;
   height: 40px;
   padding: 15px 20px;
   border-radius: 4px;

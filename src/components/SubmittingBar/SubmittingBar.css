@@ -7,6 +7,10 @@
   padding: 20px;
 
   background: #2e2f3c;
+
+  @media screen and (max-width: 767px) {
+    padding: 10px;
+  }
 }
 
 .wrapBtns {
@@ -14,10 +18,15 @@
   gap: 26px;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+  }
 }
 
 .submitBtn {
   display: flex;
+  width: 100%;
   flex: 1;
   height: 64px;
   padding: 14px 0px;
@@ -44,6 +53,7 @@
 
 .cancelBtn {
   display: flex;
+  width: 100%;
   flex: 1;
   height: 64px;
   padding: 14px 0px;
