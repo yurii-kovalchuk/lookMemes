@@ -1,5 +1,6 @@
 import React from "react";
 import { MdDelete } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
 import "./Popup.css";
 
 type PopupProps = {
@@ -21,6 +22,10 @@ const Popup = ({ onSubmit, onCancel }: PopupProps) => {
       </button>
       <button type="button" className="delCancel" onClick={onCancel}>
         Cancel
+      </button>
+
+      <button type="button" className="closeBtn" onClick={onCancel}>
+        <IoClose size={18} />
       </button>
     </div>
   );
