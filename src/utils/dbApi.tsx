@@ -26,7 +26,10 @@ export const getCategoriesFromCookie = (req: NextRequest): Category[] => {
   return JSON.parse(cookie.value);
 };
 
-export const createCategories = (res: NextResponse, categories: Category[]) => {
+export const setCategoriesToCookie = (
+  res: NextResponse,
+  categories: Category[]
+) => {
   res.cookies.set(COOKIE_NAME, JSON.stringify(categories));
   return res;
 };
